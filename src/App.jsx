@@ -83,9 +83,9 @@ const Footer = () => (
 )
 
 const CreateNew = (props) => {
-  const content = useField('text')
-  const author = useField('name')
-  const info = useField('url')
+  const {reset: contentReset, ...content} = useField('text')
+  const {reset: authorReset, ...author} = useField('name')
+  const {reset: infoReset, ...info} = useField('url')
 
   // const [content, setContent] = useState('')
   // const [author, setAuthor] = useState('')
@@ -107,9 +107,9 @@ const CreateNew = (props) => {
   }
 
   const handleReset = () => {
-    content.reset()
-    author.reset()
-    info.reset()
+    contentReset()
+    authorReset()
+    infoReset()
   }
 
   return (
