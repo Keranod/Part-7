@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit"
+import { createSlice } from '@reduxjs/toolkit'
 import blogsService from '../services/blogs'
 
 const blogsSlice = createSlice({
@@ -15,11 +15,14 @@ const blogsSlice = createSlice({
             return state.map(blog =>
                 blog.id !== action.payload.id ? blog : action.payload
             )
+        },
+        removeBlog(state, action) {
+            return state.filter((blog) => action.payload !== blog.id)
         }
     }
 })
 
-export const { setBlogs, appendBlog, updateBlogs } = blogsSlice.actions
+export const { setBlogs, appendBlog, updateBlogs, removeBlog } = blogsSlice.actions
 
 export const initializeBlogs = () => {
     return async dispatch => {
@@ -48,6 +51,13 @@ export const likeBlog = id => {
     return async dispatch => {
         const likedBlog = await blogsService.like(id)
         dispatch(updateBlogs(likedBlog))
+    }
+}
+
+export const deleteBlog = id => {
+    return async dispatch => {
+        await blogsService.remove(id)
+        dispatch(removeBlog(id))
     }
 }
 

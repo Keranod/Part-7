@@ -1,9 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from 'react'
-import { likeBlog } from '../reducers/blogsReducer'
+import { likeBlog, deleteBlog } from '../reducers/blogsReducer'
 import { useDispatch } from 'react-redux'
 
-const Blog = ({ blog, deleteBlog, loggedUser }) => {
+const Blog = ({ blog, loggedUser }) => {
     const [viewDetails, setViewDetails] = useState('none')
     const [showRemoveButton, setShowRemoveButton] = useState('none')
 
@@ -39,7 +39,7 @@ const Blog = ({ blog, deleteBlog, loggedUser }) => {
 
     const handleDeleteBlog = async (blog) => {
         if (window.confirm(`Do you want to delete blog "${blog.title}"?`)){
-            deleteBlog(blog)
+            dispatch(deleteBlog(blog.id))
         }
     }
 

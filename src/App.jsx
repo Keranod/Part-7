@@ -74,24 +74,6 @@ const App = () => {
         setUser(null)
     }
 
-    // const handleLikeBlog = async (blogObject) => {
-    //     try {
-    //         const returnedBlog = await blogService.update(blogObject.id, blogObject)
-    //         const updatedBlogs = blogs.map((blog) =>
-    //             blog.id === returnedBlog.id ? returnedBlog : blog
-    //         )
-    //         setBlogs(updatedBlogs)
-    //     } catch {null}
-    // }
-
-    const handleDeleteBlog = async (blogObject) => {
-        try {
-            await blogService.remove(blogObject.id)
-            const updatedBlogs = blogs.filter((blog) => blog.id !== blogObject.id)
-            setBlogs(updatedBlogs)
-        } catch {null}
-    }
-
     if (user === null) {
         return (
             <LoginForm
@@ -123,7 +105,7 @@ const App = () => {
             {blogForm()}
             <div>
                 {sortedBlogs.map(blog =>
-                    <Blog key={blog.id} blog={blog} deleteBlog={handleDeleteBlog} loggedUser={user} />
+                    <Blog key={blog.id} blog={blog} loggedUser={user} />
                 )}
             </div>
         </div>
