@@ -44,4 +44,11 @@ export const createBlog = ({ title, author, url }) => {
     }
 }
 
+export const likeBlog = id => {
+    return async dispatch => {
+        const likedBlog = await blogsService.like(id)
+        dispatch(updateBlogs(likedBlog))
+    }
+}
+
 export default blogsSlice.reducer

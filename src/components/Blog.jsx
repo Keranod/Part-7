@@ -1,9 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from 'react'
+import { likeBlog } from '../reducers/blogsReducer'
+import { useDispatch } from 'react-redux'
 
-const Blog = ({ blog, likeBlog, deleteBlog, loggedUser }) => {
+const Blog = ({ blog, deleteBlog, loggedUser }) => {
     const [viewDetails, setViewDetails] = useState('none')
     const [showRemoveButton, setShowRemoveButton] = useState('none')
+
+    const dispatch = useDispatch()
 
     useEffect(() => {
     //console.log('inside of useeffect')
@@ -30,9 +34,7 @@ const Blog = ({ blog, likeBlog, deleteBlog, loggedUser }) => {
     }
 
     const handleLikeBlog = async (blog) => {
-        const changedBlog = { ...blog, likes: ++blog.likes }
-
-        likeBlog(changedBlog)
+        dispatch(likeBlog(blog.id))
     }
 
     const handleDeleteBlog = async (blog) => {

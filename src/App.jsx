@@ -74,15 +74,15 @@ const App = () => {
         setUser(null)
     }
 
-    const handleLikeBlog = async (blogObject) => {
-        try {
-            const returnedBlog = await blogService.update(blogObject.id, blogObject)
-            const updatedBlogs = blogs.map((blog) =>
-                blog.id === returnedBlog.id ? returnedBlog : blog
-            )
-            setBlogs(updatedBlogs)
-        } catch {null}
-    }
+    // const handleLikeBlog = async (blogObject) => {
+    //     try {
+    //         const returnedBlog = await blogService.update(blogObject.id, blogObject)
+    //         const updatedBlogs = blogs.map((blog) =>
+    //             blog.id === returnedBlog.id ? returnedBlog : blog
+    //         )
+    //         setBlogs(updatedBlogs)
+    //     } catch {null}
+    // }
 
     const handleDeleteBlog = async (blogObject) => {
         try {
@@ -123,7 +123,7 @@ const App = () => {
             {blogForm()}
             <div>
                 {sortedBlogs.map(blog =>
-                    <Blog key={blog.id} blog={blog} likeBlog={handleLikeBlog} deleteBlog={handleDeleteBlog} loggedUser={user} />
+                    <Blog key={blog.id} blog={blog} deleteBlog={handleDeleteBlog} loggedUser={user} />
                 )}
             </div>
         </div>
