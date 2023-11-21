@@ -2,7 +2,8 @@ import { useState, useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { notificationReducer } from './reducers/notificationReducer'
 
-import { initializeBlogs, createBlog } from './reducers/blogsReducer'
+import { initializeBlogs } from './reducers/blogsReducer'
+import { userLogin, userReducer } from './reducers/userReducer'
 
 import Blog from './components/Blog'
 import blogService from './services/blogs'
@@ -15,10 +16,10 @@ import BlogForm from './components/BlogForm'
 
 const App = () => {
     const blogs = useSelector(state => state.blogs)
+    const user = useSelector(state => state.user)
     const [sortedBlogs, setSortedBlogs] = useState([])
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
-    const [user, setUser] = useState(null)
     const dispatch = useDispatch()
     const blogFormRef = useRef()
 
@@ -30,7 +31,7 @@ const App = () => {
         const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
         if (loggedUserJSON) {
             const user = JSON.parse(loggedUserJSON)
-            setUser(user)
+            dispatch(userReducer(user))
             blogService.setToken(user.token)
         }
     }, [])
@@ -48,16 +49,17 @@ const App = () => {
         event.preventDefault()
 
         try {
-            const user = await loginService.login({
-                username, password,
-            })
+            // const user = await loginService.login({
+            //     username, password,
+            // })
 
-            window.localStorage.setItem(
-                'loggedBlogappUser', JSON.stringify(user)
-            )
+            // window.localStorage.setItem(
+            //     'loggedBlogappUser', JSON.stringify(user)
+            // )
 
-            blogService.setToken(user.token)
-            setUser(user)
+            // blogService.setToken(user.token)
+            // setUser(user)
+            dispatch(userLogin({ username, password }))
             setUsername('')
             setPassword('')
 
