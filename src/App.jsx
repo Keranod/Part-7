@@ -1,6 +1,9 @@
 import { useState, useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { notificationReducer } from './reducers/notificationReducer'
+
+import { initializeBlogs, createBlog } from './reducers/blogsReducer'
+
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
@@ -11,19 +14,16 @@ import LoginForm from './components/LoginForm'
 import BlogForm from './components/BlogForm'
 
 const App = () => {
-    const [blogs, setBlogs] = useState([])
+    const blogs = useSelector(state => state.blogs)
     const [sortedBlogs, setSortedBlogs] = useState([])
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [user, setUser] = useState(null)
-    // const notification = useSelector(state => state.notification)
     const dispatch = useDispatch()
     const blogFormRef = useRef()
 
     useEffect(() => {
-        blogService.getAll().then(blogs =>
-            setBlogs( blogs )
-        )
+        dispatch(initializeBlogs())
     }, [])
 
     useEffect(() => {
@@ -40,16 +40,8 @@ const App = () => {
         setSortedBlogs(blogsSortedByLikes)
     }, [blogs])
 
-    const handleCreateBlog = async (blogObject) => {
+    const handleCreateBlog = () => {
         blogFormRef.current.toggleVisibility()
-        try {
-            const returnedBlog = await blogService.create(blogObject)
-
-            setBlogs(blogs.concat(returnedBlog))
-            dispatch(notificationReducer({ message: `a new blog ${returnedBlog.title} by ${returnedBlog.author} added`, type: 'success' }))
-        } catch (exception) {
-            console.log(exception)
-        }
     }
 
     const handleLogin = async (event) => {
@@ -108,25 +100,20 @@ const App = () => {
                 handleUsernameChange={({ target }) => setUsername(target.value)}
                 handlePasswordChange={({ target }) => setPassword(target.value)}
                 handleLogin={handleLogin}
-                // notificationMessage={notificationMessage}
-                // notificationType={notificationType}
             />
         )
     }
 
     const blogForm = () => (
         <Togglable buttonId='newBlog' buttonLabel='new blog' ref={blogFormRef}>
-            <BlogForm createBlog={handleCreateBlog} />
+            <BlogForm toggleVisibility={handleCreateBlog} />
         </Togglable>
     )
 
     return (
         <div>
             <h2>blogs</h2>
-            <Notification
-                // message={notificationMessage}
-                // type={notificationType}
-            />
+            <Notification />
             <form onSubmit={handleLogout}>
                 <p>
                     {user.name} logged in

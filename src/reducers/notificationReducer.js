@@ -21,7 +21,6 @@ const notificationSlice = createSlice({
                 message: null,
                 type: null
             }
-            console.log(newState)
             return newState
         }
     }
