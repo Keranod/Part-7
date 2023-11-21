@@ -7,7 +7,6 @@ import { userLogin, userReducer } from './reducers/userReducer'
 
 import Blog from './components/Blog'
 import blogService from './services/blogs'
-import loginService from './services/login'
 
 import Togglable from './components/Togglable'
 import Notification from './components/Notification'
@@ -49,16 +48,6 @@ const App = () => {
         event.preventDefault()
 
         try {
-            // const user = await loginService.login({
-            //     username, password,
-            // })
-
-            // window.localStorage.setItem(
-            //     'loggedBlogappUser', JSON.stringify(user)
-            // )
-
-            // blogService.setToken(user.token)
-            // setUser(user)
             dispatch(userLogin({ username, password }))
             setUsername('')
             setPassword('')
@@ -73,7 +62,7 @@ const App = () => {
         event.preventDefault()
 
         window.localStorage.removeItem('loggedBlogappUser')
-        setUser(null)
+        dispatch(userReducer(null))
     }
 
     if (user === null) {
