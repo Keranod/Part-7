@@ -12,6 +12,26 @@ import Togglable from './components/Togglable'
 import Notification from './components/Notification'
 import LoginForm from './components/LoginForm'
 import BlogForm from './components/BlogForm'
+import Users from './components/Users'
+
+import {
+    BrowserRouter as Router,
+    Routes,
+    Route,
+    Link,
+    Navigate,
+    useNavigate,
+    useMatch
+} from 'react-router-dom'
+
+const BlogList = ({ sortedBlogs, user, blogForm }) => (
+    <div>
+        {blogForm()}
+        {sortedBlogs.map(blog =>
+            <Blog key={blog.id} blog={blog} loggedUser={user} />
+        )}
+    </div>
+)
 
 const App = () => {
     const blogs = useSelector(state => state.blogs)
@@ -93,12 +113,18 @@ const App = () => {
                     <button id='logout' type='submit'>logout</button>
                 </p>
             </form>
-            {blogForm()}
-            <div>
-                {sortedBlogs.map(blog =>
-                    <Blog key={blog.id} blog={blog} loggedUser={user} />
-                )}
-            </div>
+
+            <Router>
+                <Routes>
+                    <Route
+                        path='/' element={<BlogList sortedBlogs={sortedBlogs} user={user} blogForm={blogForm} />}
+                    />
+                    <Route
+                        path='/blogs' element={<BlogList sortedBlogs={sortedBlogs} user={user} blogForm={blogForm} />}
+                    />
+                    <Route path='/users' element={<Users /> } />
+                </Routes>
+            </Router>
         </div>
     )
 }
