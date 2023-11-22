@@ -2,6 +2,7 @@ const config = require('./utils/config')
 const express = require('express')
 require('express-async-errors')
 const app = express()
+const path = require('path')
 const cors = require('cors')
 const loginRouter = require('./controllers/login')
 const usersRouter = require('./controllers/users')
@@ -34,7 +35,7 @@ app.use('/api/users', usersRouter)
 app.use('/api/blogs', middleware.userExtractor, blogsRouter)
 
 app.get('*', (req, res) => {
-    res.sendFile('dist', 'index.html')
+    res.sendFile(path.join(__dirname, 'dist', 'index.html'))
 })
 
 if (process.env.NODE_ENV === 'test') {
