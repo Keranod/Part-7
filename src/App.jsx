@@ -13,6 +13,7 @@ import Notification from './components/Notification'
 import LoginForm from './components/LoginForm'
 import BlogForm from './components/BlogForm'
 import Users from './components/Users'
+import User from './components/User'
 
 import {
     BrowserRouter as Router,
@@ -36,6 +37,7 @@ const BlogList = ({ sortedBlogs, user, blogForm }) => (
 const App = () => {
     const blogs = useSelector(state => state.blogs)
     const user = useSelector(state => state.user)
+    const users = useSelector(state => state.users)
     const [sortedBlogs, setSortedBlogs] = useState([])
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
@@ -44,9 +46,6 @@ const App = () => {
 
     useEffect(() => {
         dispatch(initializeBlogs())
-    }, [])
-
-    useEffect(() => {
         const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
         if (loggedUserJSON) {
             const user = JSON.parse(loggedUserJSON)
@@ -85,6 +84,11 @@ const App = () => {
         dispatch(userReducer(null))
     }
 
+    // const match = useMatch('/users/:id')
+    // const showUser = match
+    //     ? users.find(user => user.id === Number(match.params.id))
+    //     : null
+
     if (user === null) {
         return (
             <LoginForm
@@ -122,6 +126,7 @@ const App = () => {
                     <Route
                         path='/blogs' element={<BlogList sortedBlogs={sortedBlogs} user={user} blogForm={blogForm} />}
                     />
+                    <Route path='/users/:id' element={<User />} />
                     <Route path='/users' element={<Users /> } />
                 </Routes>
             </Router>
