@@ -121,6 +121,8 @@ blogsRouter.post('/:id/comments', async (request, response) => {
         comment: body.comment
     }
 
+    console.log(commentObject)
+
     try {
         const updatedBlog = await Blog.findByIdAndUpdate(
             request.params.id,
@@ -129,6 +131,8 @@ blogsRouter.post('/:id/comments', async (request, response) => {
             },
             { new: true }
         )
+
+        console.log(updatedBlog)
 
         if (!updatedBlog) {
             return response.status(404).json({ error: 'Blog not found' })
