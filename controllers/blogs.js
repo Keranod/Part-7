@@ -1,12 +1,6 @@
 const blogsRouter = require('express').Router()
 const Blog = require('../models/blog')
 
-function generateRandomNumberId(length = 8) {
-    const min = Math.pow(10, length - 1)
-    const max = Math.pow(10, length) - 1
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
 blogsRouter.get('/', async (request, response) => {
     const blogs = await Blog
         .find({}).populate('user', { username: 1, name: 1 })
@@ -116,7 +110,9 @@ blogsRouter.post('/:id/comments', async (request, response) => {
         return response.status(400).end().json({ error: 'Missing comment property' })
     }
 
-    const comment = body.comment
+    const comment = {
+        comment: body.comment
+    }
 
     try {
         const updatedBlog = await Blog.findByIdAndUpdate(
