@@ -3,6 +3,16 @@ import { useState, useEffect } from 'react'
 import { likeBlog, deleteBlog } from '../reducers/blogsReducer'
 import { useDispatch } from 'react-redux'
 
+import {
+    BrowserRouter as Router,
+    Routes,
+    Route,
+    Link,
+    Navigate,
+    useNavigate,
+    useMatch
+} from 'react-router-dom'
+
 const Blog = ({ blog, loggedUser }) => {
     const [viewDetails, setViewDetails] = useState('none')
     const [showRemoveButton, setShowRemoveButton] = useState('none')
@@ -46,7 +56,7 @@ const Blog = ({ blog, loggedUser }) => {
     return(
         <div className='blog' style={blogStyle}>
             <div>
-                {blog.title} {blog.author}
+                <Link to={`/blogs/${blog.id}`}>{blog.title} {blog.author}</Link>
                 <button id='view' onClick={toggleViewDetails}>view</button>
             </div>
             <div style={{ display: viewDetails }} className='viewDetails'>

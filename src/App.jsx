@@ -1,17 +1,15 @@
 import { useState, useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { notificationReducer } from './reducers/notificationReducer'
 
-import { initializeBlogs } from './reducers/blogsReducer'
+import { notificationReducer } from './reducers/notificationReducer'
 import { userLogin, userReducer } from './reducers/userReducer'
 
-import Blog from './components/Blog'
 import blogService from './services/blogs'
 
-import Togglable from './components/Togglable'
 import Notification from './components/Notification'
 import LoginForm from './components/LoginForm'
-import BlogForm from './components/BlogForm'
+import BlogList from './components/BlogList'
+import BlogView from './components/BlogView'
 import Users from './components/Users'
 import User from './components/User'
 
@@ -25,27 +23,13 @@ import {
     useMatch
 } from 'react-router-dom'
 
-const BlogList = ({ sortedBlogs, user, blogForm }) => (
-    <div>
-        {blogForm()}
-        {sortedBlogs.map(blog =>
-            <Blog key={blog.id} blog={blog} loggedUser={user} />
-        )}
-    </div>
-)
-
 const App = () => {
-    const blogs = useSelector(state => state.blogs)
     const user = useSelector(state => state.user)
-    const users = useSelector(state => state.users)
-    const [sortedBlogs, setSortedBlogs] = useState([])
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const dispatch = useDispatch()
-    const blogFormRef = useRef()
 
     useEffect(() => {
-        dispatch(initializeBlogs())
         const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
         if (loggedUserJSON) {
             const user = JSON.parse(loggedUserJSON)
@@ -53,15 +37,6 @@ const App = () => {
             blogService.setToken(user.token)
         }
     }, [])
-
-    useEffect(() => {
-        const blogsSortedByLikes = blogs.slice().sort((a, b) => b.likes - a.likes)
-        setSortedBlogs(blogsSortedByLikes)
-    }, [blogs])
-
-    const handleCreateBlog = () => {
-        blogFormRef.current.toggleVisibility()
-    }
 
     const handleLogin = async (event) => {
         event.preventDefault()
@@ -84,11 +59,6 @@ const App = () => {
         dispatch(userReducer(null))
     }
 
-    // const match = useMatch('/users/:id')
-    // const showUser = match
-    //     ? users.find(user => user.id === Number(match.params.id))
-    //     : null
-
     if (user === null) {
         return (
             <LoginForm
@@ -100,12 +70,6 @@ const App = () => {
             />
         )
     }
-
-    const blogForm = () => (
-        <Togglable buttonId='newBlog' buttonLabel='new blog' ref={blogFormRef}>
-            <BlogForm toggleVisibility={handleCreateBlog} />
-        </Togglable>
-    )
 
     return (
         <div>
@@ -121,10 +85,13 @@ const App = () => {
             <Router>
                 <Routes>
                     <Route
-                        path='/' element={<BlogList sortedBlogs={sortedBlogs} user={user} blogForm={blogForm} />}
+                        path='/' element={<BlogList user={user} />}
                     />
                     <Route
-                        path='/blogs' element={<BlogList sortedBlogs={sortedBlogs} user={user} blogForm={blogForm} />}
+                        path='/blogs' element={<BlogList user={user} />}
+                    />
+                    <Route
+                        path='/blogs/:id' element={<BlogView />}
                     />
                     <Route path='/users/:id' element={<User />} />
                     <Route path='/users' element={<Users /> } />
