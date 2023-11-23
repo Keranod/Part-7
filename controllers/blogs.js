@@ -116,18 +116,13 @@ blogsRouter.post('/:id/comments', async (request, response) => {
         return response.status(400).end().json({ error: 'Missing comment property' })
     }
 
-    const commentObject = {
-        id: generateRandomNumberId(),
-        comment: body.comment
-    }
-
-    console.log(commentObject)
+    const comment = body.comment
 
     try {
         const updatedBlog = await Blog.findByIdAndUpdate(
             request.params.id,
             {
-                $push: { comments: commentObject }
+                $push: { comments: comment }
             },
             { new: true }
         )
