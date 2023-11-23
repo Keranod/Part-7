@@ -1,6 +1,12 @@
 const blogsRouter = require('express').Router()
 const Blog = require('../models/blog')
 
+function generateRandomNumberId(length = 8) {
+    const min = Math.pow(10, length - 1)
+    const max = Math.pow(10, length) - 1
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 blogsRouter.get('/', async (request, response) => {
     const blogs = await Blog
         .find({}).populate('user', { username: 1, name: 1 })
@@ -25,6 +31,10 @@ blogsRouter.post('/', async (request, response) => {
         body.likes = 0
     }
 
+    if (!body.comments) {
+        body.comments = []
+    }
+
     if (!request.token) {
         return response.status(401).send({ error: 'Unauthorized' })
     }
@@ -34,7 +44,8 @@ blogsRouter.post('/', async (request, response) => {
         author: body.author,
         url: body.url,
         likes: body.likes,
-        user: user.id
+        user: user.id,
+        comments: body.comments
     })
 
     const savedBlog = await blog.save()
@@ -92,6 +103,43 @@ blogsRouter.put('/:id', async (request, response) => {
     ).populate('user', { username: 1, name: 1 })
 
     response.status(200).json(updatedBlog)
+})
+
+blogsRouter.post('/:id/comments', async (request, response) => {
+    if (!request.token) {
+        return response.status(401).send({ error: 'Unauthorized' })
+    }
+
+    const body = request.body
+
+    if (!body.comment) {
+        return response.status(400).end().json({ error: 'Missing comment property' })
+    }
+
+    const commentObject = {
+        id: generateRandomNumberId(),
+        comment: body.comment
+    }
+
+    try {
+        const updatedBlog = await Blog.findByIdAndUpdate(
+            request.params.id,
+            {
+                $push: { comments: commentObject }
+            },
+            { new: true }
+        )
+
+        if (!updatedBlog) {
+            return response.status(404).json({ error: 'Blog not found' })
+        }
+
+        await updatedBlog.populate('user', { username: 1, name: 1 }).execPopulate()
+
+        response.status(201).json(updatedBlog)
+    } catch (error) {
+        response.status(500).json({ error: 'Internal Server Error' })
+    }
 })
 
 module.exports = blogsRouter
