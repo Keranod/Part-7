@@ -100,6 +100,7 @@ blogsRouter.put('/:id', async (request, response) => {
 })
 
 blogsRouter.post('/:id/comments', async (request, response) => {
+    console.log('create comment request recieved')
     if (!request.token) {
         return response.status(401).send({ error: 'Unauthorized' })
     }
