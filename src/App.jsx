@@ -73,30 +73,32 @@ const App = () => {
 
     return (
         <div>
-            <h2>blogs</h2>
+            <nav id='topnav' style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                <Link to={'/blogs'}>blogs</Link>
+                <Link to={'/users'}>users</Link>
+                <form onSubmit={handleLogout}>
+                    <p>
+                        {user.name} logged in
+                        <button id='logout' type='submit'>logout</button>
+                    </p>
+                </form>
+            </nav>
+            <h2>blog app</h2>
             <Notification />
-            <form onSubmit={handleLogout}>
-                <p>
-                    {user.name} logged in
-                    <button id='logout' type='submit'>logout</button>
-                </p>
-            </form>
 
-            <Router>
-                <Routes>
-                    <Route
-                        path='/' element={<BlogList user={user} />}
-                    />
-                    <Route
-                        path='/blogs' element={<BlogList user={user} />}
-                    />
-                    <Route
-                        path='/blogs/:id' element={<BlogView />}
-                    />
-                    <Route path='/users/:id' element={<User />} />
-                    <Route path='/users' element={<Users /> } />
-                </Routes>
-            </Router>
+            <Routes>
+                <Route
+                    path='/' element={<BlogList user={user} />}
+                />
+                <Route
+                    path='/blogs' element={<BlogList user={user} />}
+                />
+                <Route
+                    path='/blogs/:id' element={<BlogView />}
+                />
+                <Route path='/users/:id' element={<User />} />
+                <Route path='/users' element={<Users /> } />
+            </Routes>
         </div>
     )
 }
