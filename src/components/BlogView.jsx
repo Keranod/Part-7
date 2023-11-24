@@ -35,15 +35,11 @@ const BlogView = () => {
         return null
     }
 
-    // return (
-    //     <div>
-    //         {blog.id}
-    //         {blog.title}
-    //         {blog.author}
-    //         {blog.url}
-    //         {blog.likes}
-    //     </div>
-    // )
+    let comments = []
+
+    if (blog.comments && blog.comments.length > 0) {
+        comments = blog.comments
+    }
 
     return (
         <div>
@@ -54,6 +50,16 @@ const BlogView = () => {
             </div>
             <div>
                 added by {blog.user.username}
+            </div>
+            <h3>comments</h3>
+            <div >
+                <ul>
+                    {comments.map(comment =>
+                        <li key={comment.id} className='comment'>
+                            {comment.comment}
+                        </li>
+                    )}
+                </ul>
             </div>
         </div>
     )
