@@ -131,6 +131,7 @@ blogsRouter.post('/:id/comments', async (request, response) => {
 
         response.status(201).json(updatedBlog)
     } catch (error) {
+        console.log(error)
         response.status(500).json({ error: 'My Internal Server Error' })
     }
 })
