@@ -100,7 +100,6 @@ blogsRouter.put('/:id', async (request, response) => {
 })
 
 blogsRouter.post('/:id/comments', async (request, response) => {
-    console.log('create comment request recieved')
     if (!request.token) {
         return response.status(401).send({ error: 'Unauthorized' })
     }
@@ -123,8 +122,6 @@ blogsRouter.post('/:id/comments', async (request, response) => {
             },
             { new: true }
         )
-
-        console.log(updatedBlog)
 
         if (!updatedBlog) {
             return response.status(404).json({ error: 'Blog not found' })

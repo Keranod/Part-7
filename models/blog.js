@@ -27,7 +27,13 @@ blogSchema.set('toJSON', {
         returnedObject.id = returnedObject._id.toString()
         delete returnedObject._id
         delete returnedObject.__v
-        
+        if (returnedObject.comments && returnedObject.comments > 0) {
+            returnedObject.comments.map(comment => {
+                comment.id = comment._id.toString()
+                delete comment._id
+                return comment
+            })
+        }
     }
 })
 
