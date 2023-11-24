@@ -4,6 +4,8 @@ import { useSelector, useDispatch } from 'react-redux'
 
 import { initializeBlogs } from '../reducers/blogsReducer'
 
+import CommentForm from './CommentForm'
+
 import {
     BrowserRouter as Router,
     Routes,
@@ -52,6 +54,7 @@ const BlogView = () => {
                 added by {blog.user.username}
             </div>
             <h3>comments</h3>
+            <CommentForm comments={blog.comments} />
             <div >
                 <ul>
                     {comments.map(comment =>
