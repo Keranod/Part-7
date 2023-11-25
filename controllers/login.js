@@ -7,6 +7,13 @@ loginRouter.post('/', async (request, response) => {
     const { username, password } = request.body
 
     const user = await User.findOne({ username })
+
+    if (user === null) {
+        return response.status(401).json({
+            error: `"${username}" user does not exist`
+        })
+    }
+
     const passwordCorrect = user === null
         ? false
         : await bcrypt.compare(password, user.passwordHash)
