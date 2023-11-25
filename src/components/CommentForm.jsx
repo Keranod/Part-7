@@ -3,6 +3,10 @@ import { useDispatch } from 'react-redux'
 import blogsService from '../services/blogs'
 import { updateBlogs } from '../reducers/blogsReducer'
 
+import {
+    StyledButton
+} from '../styles/BlogListStyles'
+
 const CommentForm = ({ blog }) => {
     const [comment, setComment] = useState('')
 
@@ -34,7 +38,7 @@ const CommentForm = ({ blog }) => {
                     />
                 </div>
 
-                <button id='add' type='submit'>add comment</button>
+                <StyledButton id='add' type='submit'>add comment</StyledButton>
 
             </form>
         </div>

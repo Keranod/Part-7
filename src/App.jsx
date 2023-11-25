@@ -13,6 +13,8 @@ import BlogView from './components/BlogView'
 import Users from './components/Users'
 import User from './components/User'
 
+import styled from 'styled-components'
+
 import {
     BrowserRouter as Router,
     Routes,
@@ -22,6 +24,62 @@ import {
     useNavigate,
     useMatch
 } from 'react-router-dom'
+
+import {
+    StyledNavButton
+} from './styles/NavBarStlyes'
+
+const NavBarButton = styled.button`
+    padding:10px;
+    border: 2px solid blue;
+    border-radius: 4px;
+`
+
+const NavBarLink = styled(Link)`
+    appearance: none;
+    background-color: #2ea44f;
+    border: 1px solid rgba(27, 31, 35, .15);
+    border-radius: 6px;
+    box-shadow: rgba(27, 31, 35, .1) 0 1px 0;
+    box-sizing: border-box;
+    color: #fff;
+    cursor: pointer;
+    display: inline-block;
+    font-family: -apple-system,system-ui,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 20px;
+    padding: 6px 16px;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    vertical-align: middle;
+    white-space: nowrap;
+    &:focus:not(:focus-visible):not(.focus-visible) {
+        box-shadow: none;
+        outline: none;
+    }
+    &:hover {
+        background-color: #2c974b;
+    }
+    &:focus {
+        box-shadow: rgba(46, 164, 79, .4) 0 0 0 3px;
+        outline: none;
+    }
+    &:disabled {
+        background-color: #94d3a2;
+        border-color: rgba(27, 31, 35, .1);
+        color: rgba(255, 255, 255, .8);
+        cursor: default;
+    }
+    &:active {
+        background-color: #298e46;
+        box-shadow: rgba(20, 70, 32, .2) 0 1px 0 inset;
+    }
+`
 
 const App = () => {
     const user = useSelector(state => state.user)
@@ -42,7 +100,7 @@ const App = () => {
         event.preventDefault()
 
         try {
-            dispatch(userLogin({ username, password }))
+            await dispatch(userLogin({ username, password }))
             setUsername('')
             setPassword('')
 
@@ -74,12 +132,12 @@ const App = () => {
     return (
         <div>
             <nav id='topnav' style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-                <Link to={'/blogs'}>blogs</Link>
-                <Link to={'/users'}>users</Link>
+                <Link to={'/blogs'}><StyledNavButton>blogs</StyledNavButton></Link>
+                <Link to={'/users'}><StyledNavButton>users</StyledNavButton></Link>
                 <form onSubmit={handleLogout}>
                     <p>
-                        {user.name} logged in
-                        <button id='logout' type='submit'>logout</button>
+                        <b>{user.name}</b> logged in
+                        <StyledNavButton id='logout' type='submit'>logout</StyledNavButton>
                     </p>
                 </form>
             </nav>

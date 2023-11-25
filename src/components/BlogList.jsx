@@ -16,6 +16,10 @@ import {
     useMatch
 } from 'react-router-dom'
 
+import {
+    StyledBlogDiv
+} from '../styles/BlogListStyles'
+
 const BlogList = ({ user }) => {
     const blogs = useSelector(state => state.blogs)
     const [sortedBlogs, setSortedBlogs] = useState([])
@@ -42,14 +46,6 @@ const BlogList = ({ user }) => {
         </Togglable>
     )
 
-    const blogStyle = {
-        paddingTop: 10,
-        paddingLeft: 2,
-        border: 'solid',
-        borderWidth: 1,
-        marginBottom: 5
-    }
-
     return (
         <div>
             <div>
@@ -57,9 +53,9 @@ const BlogList = ({ user }) => {
             </div>
             <div>
                 {sortedBlogs.map(blog =>
-                    <div key={blog.id} className='blog' style={blogStyle}>
-                        <Link  to={`/blogs/${blog.id}`}>{blog.title} {blog.author}</Link>
-                    </div>
+                    <StyledBlogDiv key={blog.id} className='blog'>
+                        <Link to={`/blogs/${blog.id}`}>{blog.title} {blog.author}</Link>
+                    </StyledBlogDiv>
                 )}
             </div>
         </div>

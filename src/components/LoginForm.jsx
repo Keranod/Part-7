@@ -1,48 +1,54 @@
 import Notification from './Notification'
 
+import {
+    StyledLoginDiv,
+    StyledLoginInput,
+    StyledLoginButton,
+    StyledLoginButtonDiv
+}
+from '../styles/LoginFormStyled'
+
 const LoginForm = ({
     handleLogin,
     handleUsernameChange,
     handlePasswordChange,
     username,
     password,
-    // notificationMessage,
-    // notificationType
 }) => {
     return (
-        <div className='loginForm'>
+        <StyledLoginDiv className='loginForm'>
             <h2>Log in to application</h2>
             <Notification
-                // message={notificationMessage}
-                // type={notificationType}
             />
             <form onSubmit={handleLogin}>
                 <div>
-          username
-                    <input
+                    <StyledLoginInput
                         id='username'
                         type='text'
                         value={username}
                         name='Username'
                         onChange={handleUsernameChange}
+                        placeholder='username'
                     />
                 </div>
                 <div>
-          password
-                    <input
+                    <StyledLoginInput
                         id='password'
-                        type='text'
+                        type='password'
                         value={password}
                         name='Password'
                         onChange={handlePasswordChange}
+                        placeholder='password'
                     />
                 </div>
-                <button
-                    id='login-button'
-                    type='submit'
-                >login</button>
+                <StyledLoginButtonDiv>
+                    <StyledLoginButton
+                        id='login-button'
+                        type='submit'
+                    >login</StyledLoginButton>
+                </StyledLoginButtonDiv>
             </form>
-        </div>
+        </StyledLoginDiv>
     )
 }
 export default LoginForm

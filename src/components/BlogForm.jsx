@@ -3,6 +3,10 @@ import { createBlog } from '../reducers/blogsReducer'
 import { useDispatch } from 'react-redux'
 import { notificationReducer } from '../reducers/notificationReducer'
 
+import {
+    StyledButton
+} from '../styles/BlogListStyles'
+
 const BlogForm = ({ toggleVisibility }) => {
     const [title, setTitle] = useState('')
     const [author, setAuthor] = useState('')
@@ -74,7 +78,7 @@ const BlogForm = ({ toggleVisibility }) => {
                     />
                 </div>
 
-                <button id='create' type='submit'>create</button>
+                <StyledButton id='create' type='submit'>create</StyledButton>
 
             </form>
         </div>
