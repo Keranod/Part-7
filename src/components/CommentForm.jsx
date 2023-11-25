@@ -1,7 +1,9 @@
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
+import blogsService from '../services/blogs'
+import { updateBlogs } from '../reducers/blogsReducer'
 
-const CommentForm = ({ comments }) => {
+const CommentForm = ({ blog }) => {
     const [comment, setComment] = useState('')
 
     const dispatch = useDispatch()
@@ -9,7 +11,9 @@ const CommentForm = ({ comments }) => {
     const handleAddComment = async (event) => {
         event.preventDefault()
         try {
-            // need to create axios request to add comment and then usng response data concat to comments
+            const updatedBlog = await blogsService.addComment(blog.id, comment)
+            // console.log(updatedBlog)
+            dispatch(updateBlogs(updatedBlog))
             setComment('')
         } catch (exception) {
             console.log(exception)

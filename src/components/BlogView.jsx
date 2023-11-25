@@ -54,7 +54,7 @@ const BlogView = () => {
                 added by {blog.user.username}
             </div>
             <h3>comments</h3>
-            <CommentForm comments={blog.comments} />
+            <CommentForm blog={blog} />
             <div >
                 <ul>
                     {comments.map(comment =>
